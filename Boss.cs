@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Boss : Enemy
+public class Boss : Enemy //Enemy 클래스 기반
 {
     public GameObject missile;
     public Transform missilePortA;
@@ -11,26 +11,26 @@ public class Boss : Enemy
     Vector3 lookVec;
     Vector3 tauntVec;
     
-    void Awake()
+    void Awake()//게임 실행 동안 
     {
-        rigid = GetComponent<Rigidbody>();
-        boxCollider = GetComponent<BoxCollider>();
-        meshs = GetComponentsInChildren<MeshRenderer>();
-        nav = GetComponent<NavMeshAgent>();
-        anim = GetComponentInChildren<Animator>();
+        rigid = GetComponent<Rigidbody>();//게임 내부 컴포넌트 가져오기1
+        boxCollider = GetComponent<BoxCollider>();//게임 내부 컴포넌트 가져오기2
+        meshs = GetComponentsInChildren<MeshRenderer>();//게임 내부 컴포넌트 가져오기3
+        nav = GetComponent<NavMeshAgent>();//게임 내부 컴포넌트 가져오기4
+        anim = GetComponentInChildren<Animator>();//게임 내부 컴포넌트 가져오기5
         
         nav.isStopped = true;
         StartCoroutine(Think());
     }
 
-    void Update()
+    void Update()//매 프래임마다 업데이트
     {
-        if (isDead)
+        if (isDead) //생사여부확인
         {
             StopAllCoroutines();
             return;
         }
-        if (isLook)
+        if (isLook)//일정 범위 내에 타겟이 있는지 감지
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
@@ -45,24 +45,24 @@ public class Boss : Enemy
     {
         yield return new WaitForSeconds(0.1f);
 
-        int ranAction = Random.Range(0, 5);
+        int ranAction = Random.Range(0, 5);//0~4까지 무작위 정수 숫자
         switch (ranAction)
         {
             case 0:
             case 1:
-                StartCoroutine(MissileShot());
+                StartCoroutine(MissileShot());//공격재생1
                 break;
             case 2:
             case 3:
-                StartCoroutine(RockShot());
+                StartCoroutine(RockShot());//공격재생2
                 break;
             case 4:
-                StartCoroutine(RockShot());
+                StartCoroutine(RockShot());//공격재생3
                 break;
         }
     }
 
-    IEnumerator MissileShot()
+    IEnumerator MissileShot()//미사일 발사 형식
     {
         anim.SetTrigger("doShot");
         yield return new WaitForSeconds(0.2f);
@@ -79,7 +79,7 @@ public class Boss : Enemy
         StartCoroutine(Think());
     }
 
-    IEnumerator RockShot()
+    IEnumerator RockShot()//RockShot 공격 형식
     {
         isLook = false;
         anim.SetTrigger("doBigShot");
