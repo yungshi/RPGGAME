@@ -90,7 +90,7 @@ public class Boss : Enemy //Enemy 클래스 기반
         StartCoroutine(Think());
     }
 
-    IEnumerator Taunt()
+    IEnumerator Taunt()//플레이어에게 도발
     {
         tauntVec = Target.position + lookVec;
         
