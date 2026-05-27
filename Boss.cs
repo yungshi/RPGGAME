@@ -57,7 +57,7 @@ public class Boss : Enemy //Enemy 클래스 기반
                 StartCoroutine(RockShot());//공격재생2
                 break;
             case 4:
-                StartCoroutine(RockShot());//공격재생3
+                StartCoroutine(Taunt());//공격재생3
                 break;
         }
     }
