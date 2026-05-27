@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
             Invoke("ChaseStart", 2);
     }
 
-    void ChaseStart()
+    void ChaseStart()//플레이어를 쫓아감
     {
         isChase = true;
         anim.SetBool("isWalk", true);
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-       if(nav.enabled && enemyType != Type.D)
+       if(nav.enabled && enemyType != Type.D)//Type D 몬스터 제외
         {
             nav.SetDestination(Target.position);
             nav.isStopped = !isChase;
@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     void Targerting()
     {
-        if(!isDead && enemyType != Type.D)
+        if(!isDead && enemyType != Type.D)//Type D 제외 나머지 않 죽은 Type
         {
             float targetRadius = 0;
             float targetRange = 0;
@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour
             }
         
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));
-
+            //공격범위안 플레이어 감지
             if(rayHits.Length > 0 && !isAttack)
             {
                 StartCoroutine(Attack());
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
         
     }
 
-    IEnumerator Attack()
+    IEnumerator Attack()//공격패턴
     {
         isChase = false;
         isAttack = true;
@@ -141,7 +141,7 @@ public class Enemy : MonoBehaviour
         FreezeVelocity();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)//플레이어의 공격무기별 상호작용
     {
         if(other.tag == "Melee")
         {
@@ -159,7 +159,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void HitByGrenade(Vector3 explosionPos)
+    public void HitByGrenade(Vector3 explosionPos)//플레이어 공격무기 상호작용2
     {
         curHealth -= 100;
         Vector3 reactVec = transform.position - explosionPos;
@@ -202,7 +202,7 @@ public class Enemy : MonoBehaviour
 
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
             }
-            if(enemyType != Type.D)
+            if(enemyType != Type.D)//사망 몬스터 제거
                 Destroy(gameObject, 4);
         }
     }
