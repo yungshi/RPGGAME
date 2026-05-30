@@ -1,4 +1,5 @@
-# ==RPGGAME== <br>
+# RPGGAME <br>
+*** s
 
 ## 학번/이름 <br>
 **21014 / 이연** <br>
