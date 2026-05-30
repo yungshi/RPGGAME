@@ -1,4 +1,4 @@
-using UnityEngine;//*
+using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
@@ -6,8 +6,8 @@ public class Weapon : MonoBehaviour
     public Type type;
     public int damage;
     public float rate;
-    public int maxAmmo;
-    public int curAmmo;
+    public int maxAmmo;//총알최대수
+    public int curAmmo;//현재 총알수
 
     public BoxCollider meleeArea;
     public TrailRenderer trailEffect;
@@ -18,19 +18,19 @@ public class Weapon : MonoBehaviour
 
     public void Use()
     {
-        if(type == Type.Melee)
+        if(type == Type.Melee)//공격
         {
             StopCoroutine("Swing");
             StartCoroutine("Swing");
         }
-        else if (type == Type.Range && curAmmo > 0)//?
+        else if (type == Type.Range && curAmmo > 0)//총알이 있을때 총알 감소후 발사
         {
             curAmmo--;
             StartCoroutine("shot");
         }
     }
 
-    IEnumerator Swing()
+    IEnumerator Swing()//근접공격
     {
         yield return new WaitForSeconds(0.1f);
         meleeArea.enabled = true;
@@ -43,7 +43,7 @@ public class Weapon : MonoBehaviour
         trailEffect.enabled = false;
     }
 
-    IEnumerator Shot()
+    IEnumerator Shot()//원거리 공격
     {
         //총알발사
         GameObject intantBulllet = Instantiate(bullet, bulletPos.position, bulletPos.rotation);
