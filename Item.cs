@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum Type { Ammo, Coin, Grenade, Heart, Weapon };
-    public Type type;
-    public int value;
+    public enum Type { Ammo, Coin, Grenade, Heart, Weapon };//*
+    public Type type;//*
+    public int value;//*
 
     Rigidbody rigid;
     SphereCollider sphereCollider;
@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
         sphereCollider = GetComponent<SphereCollider>();
     }
 
-    void Update()
+    void Update()//*
     {
         transform.Rotate(Vector3.up * 10 * Time.deltaTime);
     }
