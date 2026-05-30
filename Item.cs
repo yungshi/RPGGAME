@@ -1,4 +1,4 @@
-using UnityEngine;//*
+using UnityEngine;
 
 public class Item : MonoBehaviour
 {
@@ -9,18 +9,18 @@ public class Item : MonoBehaviour
     Rigidbody rigid;
     SphereCollider sphereCollider;
 
-    void Awake()
+    void Awake()//최초실행
     {
         rigid = GetComponent<Rigidbody>();
         sphereCollider = GetComponent<SphereCollider>();
     }
 
-    void Update()
+    void Update()//회전 업데이트
     {
         transform.Rotate(Vector3.up * 10 * Time.deltaTime);
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)//바덕에 충돌하면
     {
         if(collision.gameObject.tag =="Floor")
             {
