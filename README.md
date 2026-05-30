@@ -31,7 +31,7 @@
 
 * **Bullet.cs**: 탄피,총알 <br>
 * **Grenade.cs**: 수류탄 <br>
-* **orbit.cs**:아이템이 플레이어 주위에 회전하는 기능 <br>
+* **orbit.cs**: 아이템이 공즁에 회전하는 기능 <br>
 
 ### 보스몬스터 <br>
 * **BossRock.cs**: 보스몬스터 공격방식 <br>
