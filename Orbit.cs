@@ -8,7 +8,7 @@ public class Orbit : MonoBehaviour//*
 
     void Start()
     {
-        offSet = transform.position - target.position;//*
+        offSet = transform.position - target.position;
     }
 
     void Update()
