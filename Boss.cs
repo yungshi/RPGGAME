@@ -41,7 +41,7 @@ public class Boss : Enemy //Enemy 클래스 기반
             nav.SetDestination(tauntVec);
     }
 
-    IEnumerator Think()
+    IEnumerator Think()//보스 공격 패턴
     {
         yield return new WaitForSeconds(0.1f);
 
