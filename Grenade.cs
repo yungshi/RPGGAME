@@ -6,12 +6,12 @@ public class Grenade : MonoBehaviour
     public GameObject effectObj;
     public Rigidbody rigid;
 
-    void Start()
+    void Start()//실행 즉시 폭발
     {
         StartCoroutine(Explosion());
     }
 
-    IEnumerator Explosion()
+    IEnumerator Explosion()//폭발 방식
     {
         yield return new WaitForSeconds(3f);
         rigid.linearVelocity = Vector3.zero;
