@@ -8,6 +8,8 @@
 유니티6 https://unity.com <br>
 c# <br>
 
+* **플랫폼**: (예: PC / Web / Mobile)
+
 ## 플레이어 관련 코드 및 한줄 설명,분류 <br>
 
 ### 플레이어 <br>
