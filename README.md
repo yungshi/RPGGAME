@@ -7,13 +7,14 @@
 
 ## 기술 <br>
 
-* **유니티6**: > https://unity.com <br>
+* **유니티6**: https://unity.com <br>
 * **c#** <br>
 * **플랫폼**: window 10/11 PC <br>
 ---
 
 ## 플레이어 관련 코드 및 한줄 설명,분류 <br>
 
+> [!NOTE]
 ### 플레이어 <br>
 * **weapon.cs**: 플레이서 무기관리 <br>
 * **Item.cs**: 아이템 수집 <br>
