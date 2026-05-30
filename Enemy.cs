@@ -2,16 +2,17 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
-    public enum Type { A, B, C, D };
+    //기본 변수↓
+    public enum Type { A, B, C, D };//몬스터 이름
     public Type enemyType;
-    public int maxHealth;
-    public int curHealth;
+    public int maxHealth;//최대채력
+    public int curHealth;//현재채력
     public Transform Target;
     public BoxCollider meleeArea;
     public GameObject bullet;
-    public bool isChase;
-    public bool isAttack;
-    public bool isDead;
+    public bool isChase;//쫒아가는가?
+    public bool isAttack;//공격하는가?
+    public bool isDead;//죽었는가?
 
     public Rigidbody rigid;
     public BoxCollider boxCollider;
@@ -19,7 +20,7 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent nav;
     public Animator anim;
 
-    void Awake()
+    void Awake()//최초실행 코드
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
@@ -27,11 +28,11 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         
-        if(enemyType != Type.D)
+        if(enemyType != Type.D)//D몬스터가 아니면 2초뒤 실행
             Invoke("ChaseStart", 2);
     }
 
-    void ChaseStart()//플레이어를 쫓아감
+    void ChaseStart()//플레이어를 쫒아갈 준비
     {
         isChase = true;
         anim.SetBool("isWalk", true);
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-       if(nav.enabled && enemyType != Type.D)//Type D 몬스터 제외
+       if(nav.enabled && enemyType != Type.D)//Type D 몬스터 제외 타겟을 쫒아감
         {
             nav.SetDestination(Target.position);
             nav.isStopped = !isChase;
@@ -47,7 +48,7 @@ public class Enemy : MonoBehaviour
             
     }
 
-    void FreezeVelocity()
+    void FreezeVelocity()//불필요 관성 제서하여 튕겨나지 않게함
     {
         if (isChase)
         {
@@ -64,7 +65,7 @@ public class Enemy : MonoBehaviour
             float targetRadius = 0;
             float targetRange = 0;
 
-            switch (enemyType)
+            switch (enemyType)//몬스터별 공격 방식(공격범위 등)
             {
                 case Type.A:
                     targetRadius = 1.5f;
@@ -82,9 +83,9 @@ public class Enemy : MonoBehaviour
         
             RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));
             //공격범위안 플레이어 감지
-            if(rayHits.Length > 0 && !isAttack)
+            if(rayHits.Length > 0 && !isAttack)//타겟이 감지되면
             {
-                StartCoroutine(Attack());
+                StartCoroutine(Attack());//공격 호출
             }
         }
         
@@ -98,7 +99,7 @@ public class Enemy : MonoBehaviour
         
         switch (enemyType)
         {
-            case Type.A:
+            case Type.A://에니매이션 재생후 끄기
                 yield return new WaitForSeconds(0.2f);
                 meleeArea.enabled = true;
 
@@ -107,7 +108,7 @@ public class Enemy : MonoBehaviour
 
                 yield return new WaitForSeconds(1f);
                 break;
-            case Type.B:
+            case Type.B://돌진후 끄기
                 yield return new WaitForSeconds(0.1f);
                 rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
                 meleeArea.enabled = true;
@@ -118,7 +119,7 @@ public class Enemy : MonoBehaviour
 
                 yield return new WaitForSeconds(2f);
                 break;
-            case Type.C:
+            case Type.C://발사후 종료
                 yield return new WaitForSeconds(0.5f);
                 GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
                 Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
@@ -135,7 +136,7 @@ public class Enemy : MonoBehaviour
         anim.SetBool("isAttack", false);
     }
 
-    void FixedUpdate()
+    void FixedUpdate()//매 프래임마다 실행
     {
         Targerting();
         FreezeVelocity();
@@ -147,14 +148,14 @@ public class Enemy : MonoBehaviour
         {
             Weapon weapon = other.GetComponent<Weapon>();
             curHealth -= weapon.damage;
-            Vector3 reactVec = transform.position - other.transform.position;
+            Vector3 reactVec = transform.position - other.transform.position;//너백
             StartCoroutine(onDamage(reactVec, false));
         }
         else if (other.tag == "Bullet")
         {
             Bullet bullet = other.GetComponent<Bullet>();
             curHealth -= bullet.damage;
-            Vector3 reactVec = transform.position - other.transform.position;
+            Vector3 reactVec = transform.position - other.transform.position;//너백
             StartCoroutine(onDamage(reactVec, false));
         }
     }
@@ -162,31 +163,33 @@ public class Enemy : MonoBehaviour
     public void HitByGrenade(Vector3 explosionPos)//플레이어 공격무기 상호작용2
     {
         curHealth -= 100;
-        Vector3 reactVec = transform.position - explosionPos;
+        Vector3 reactVec = transform.position - explosionPos;//너백
         StartCoroutine(onDamage(reactVec, true));
     }
 
-    IEnumerator onDamage(Vector3 reactVec, bool isGrenade)
+    IEnumerator onDamage(Vector3 reactVec, bool isGrenade)//대미지를 받음
     {
         foreach(MeshRenderer mesh in meshs)
-            mesh.material.color = Color.red;
+            mesh.material.color = Color.red;//일시적으로 빨갛게 변화
         yield return new WaitForSeconds(0.1f);
 
-        if(curHealth > 0)
+        if(curHealth > 0)//살아있으면
         {
            foreach(MeshRenderer mesh in meshs)
-                mesh.material.color = Color.white;
+                mesh.material.color = Color.white;//살아있으면 다시 원상태
         }
-        else
+        else//죽으면
         {
             foreach(MeshRenderer mesh in meshs)
-                mesh.material.color = Color.gray;
+                mesh.material.color = Color.gray;//몸색깔 회색
             gameObject.layer = 14;
+            //초기화↓
             isDead = true;
             isChase = false;
             nav.enabled = false;
             anim.SetTrigger("doDie");
-            if (isGrenade)
+            
+            if (isGrenade)//원인이 수류탄이면
             {
                 reactVec = reactVec.normalized;
                 reactVec += Vector3.up *3;
@@ -195,14 +198,14 @@ public class Enemy : MonoBehaviour
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
                 rigid.AddTorque(reactVec * 15, ForceMode.Impulse);
             }
-            else
+            else//그외 원인
             {
                 reactVec = reactVec.normalized;
                 reactVec += Vector3.up;
 
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
             }
-            if(enemyType != Type.D)//사망 몬스터 제거
+            if(enemyType != Type.D)//보스가 아니면 사망 몬스터 제거
                 Destroy(gameObject, 4);
         }
     }
