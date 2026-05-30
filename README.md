@@ -2,12 +2,12 @@
 
 
 ## 학번/이름 <br>
-> 21014 / 이연 <br>
+21014 / 이연 <br>
 ---
 
 ## 기술 <br>
 
-* **유니티6**: https://unity.com <br>
+* **유니티6**: > https://unity.com <br>
 * **c#** <br>
 * **플랫폼**: window 10/11 PC <br>
 ---
