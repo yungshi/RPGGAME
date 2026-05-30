@@ -3,18 +3,18 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int damage;
-    public bool isMelee;//?
-    public bool isRock;//?
+    public bool isMelee;
+    public bool isRock;
     void OnCollisionEnter(Collision collision)
     {
-        if(!isRock &&collision.gameObject.tag == "Floor")
+        if(!isRock &&collision.gameObject.tag == "Floor")//땅에 부딧칠때
         {
             Destroy(gameObject, 3);
         }
         
     }
 
-    void OnTriggerEnter(Collider other)//?
+    void OnTriggerEnter(Collider other)//원거라 무기일 경루
     {
         if (!isMelee && other.gameObject.tag == "Wall")
         {
