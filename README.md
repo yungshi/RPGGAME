@@ -11,7 +11,7 @@ Item.cs: 아이템 수집(플레이어)
 Grenade.cs: 수류탄 투척(무기)
 
 Enemy.cs: 적군(몬스터)
-Bullet.cs: 탄피 및 총알(무기)
+Bullet.cs: 탄피,총알(무기)
 BossRock.cs: 보스몬스터 공격방식(보스몬스터)
 BossMissile.cs: 보스몬스터 공격방식(보스몬스터)
 Boss.cs: 보스(보스몬스터)
