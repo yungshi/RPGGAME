@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Orbit : MonoBehaviour
+public class Orbit : MonoBehaviour//*
 {
     public Transform target;
     public float orbitSpeed;
@@ -8,7 +8,7 @@ public class Orbit : MonoBehaviour
 
     void Start()
     {
-        offSet = transform.position - target.position;
+        offSet = transform.position - target.position;//*
     }
 
     void Update()
