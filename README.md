@@ -37,3 +37,29 @@
 * **BossRock.cs**: 보스몬스터 공격방식 <br>
 * **BossMissile.cs**: 보스몬스터 공격방식 <br>
 * **Boss.cs**: 보스몬스터 <br>
+
+## 프로젝트 클론생성 가이드
+
+### 준비사항
+
+* **[Git](https://git-scm.com/) <br>**
+* **Unity6**
+
+### 생성법
+1. 원하는 폴더에 Git bash 열기(마우스 우클릭) <br>
+2.코드 복사후 실행
+"""git clone
+https://github.com/yungshi/RPGGAME.git"""
+
+
+
+
+
+
+
+
+
+
+
+
+
