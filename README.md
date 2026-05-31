@@ -11,7 +11,7 @@
 
 * **[유니티](https://unity.com)  <br>** 
 * **[c#](https://learn.microsoft.com/ko-kr/dotnet/csharp/) <br>**
-* **플랫폼**: window 10/11 PC <br>
+* **플랫폼**: [window 10/11](https://www.microsoft.com/ko-kr/windows/?r=1) <br>
   
 
 ## 플레이어 관련 코드 및 한줄 설명,분류 <br>
