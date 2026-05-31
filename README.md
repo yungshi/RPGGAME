@@ -48,6 +48,10 @@
 ### 생성법
 1. 원하는 폴더에 Git bash 열기(마우스 우클릭) <br>
 2.코드 복사후 실행 <br>
+
+
+
+
 '''bash
 git clone
 https://github.com/yungshi/RPGGAME.git
