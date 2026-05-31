@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
         transform.Rotate(Vector3.up * 10 * Time.deltaTime);
     }
 
-    void OnCollisionEnter(Collision collision)//바덕에 충돌하면
+    void OnCollisionEnter(Collision collision)//바닥에 충돌하면
     {
         if(collision.gameObject.tag =="Floor")
             {
