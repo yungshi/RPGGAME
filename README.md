@@ -9,7 +9,7 @@
 
 ## 기술 <br>
 
-* **[유니티](https://unity.com)  <br>** 
+* **[유니티6](https://unity.com)  <br>** 
 * **[c#](https://learn.microsoft.com/ko-kr/dotnet/csharp/) <br>**
 * **플랫폼**: [window 10/11](https://www.microsoft.com/ko-kr/windows/?r=1) <br>
   
