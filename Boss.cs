@@ -3,13 +3,13 @@ using UnityEngine.AI;
 
 public class Boss : Enemy //Enemy 클래스 기반
 {
-    public GameObject missile;
-    public Transform missilePortA;
-    public Transform missilePortB;
+    public GameObject missile;//미사일 오브젝트
+    public Transform missilePortA;//미사일 A 위치
+    public Transform missilePortB;//미사일 B 위치
     public bool isLook;
 
-    Vector3 lookVec;
-    Vector3 tauntVec;
+    Vector3 lookVec;//플레이어 추적 백터
+    Vector3 tauntVec;//도발기 백터
     
     void Awake()//게임 실행 동안 
     {
