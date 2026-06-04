@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         
         if(enemyType != Type.D)//D몬스터가 아니면 2초뒤 실행
-            Invoke("ChaseStart", 2);
+            Invoke("ChaseStart", 2);//플레이어를 쫒아감
     }
 
     void ChaseStart()//플레이어를 쫒아갈 준비
@@ -42,8 +42,8 @@ public class Enemy : MonoBehaviour
     {
        if(nav.enabled && enemyType != Type.D)//Type D 몬스터 제외 타겟을 쫒아감
         {
-            nav.SetDestination(Target.position);
-            nav.isStopped = !isChase;
+            nav.SetDestination(Target.position);//목표지점
+            nav.isStopped = !isChase;//쫒는 것이 끝나면 멈춤
         }
             
     }
@@ -62,10 +62,10 @@ public class Enemy : MonoBehaviour
     {
         if(!isDead && enemyType != Type.D)//Type D 제외 나머지 않 죽은 Type
         {
-            float targetRadius = 0;
-            float targetRange = 0;
+            float targetRadius = 0;//사거리
+            float targetRange = 0;//범위
 
-            switch (enemyType)//몬스터별 공격 방식(공격범위 등)
+            switch (enemyType)//몬스터별 사거리와 감지 범위
             {
                 case Type.A:
                     targetRadius = 1.5f;
@@ -93,53 +93,53 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Attack()//공격패턴
     {
-        isChase = false;
-        isAttack = true;
+        isChase = false;//쫒지 않음
+        isAttack = true;//공격허용
         anim.SetBool("isAttack", true);
         
         switch (enemyType)
         {
             case Type.A://에니매이션 재생후 끄기
-                yield return new WaitForSeconds(0.2f);
-                meleeArea.enabled = true;
+                yield return new WaitForSeconds(0.2f);//0.2초 대기
+                meleeArea.enabled = true;//공격허용
 
-                yield return new WaitForSeconds(1f);
-                meleeArea.enabled = false;
+                yield return new WaitForSeconds(1f);//1초 대기
+                meleeArea.enabled = false;//공격 중지
 
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f);//1초대기
                 break;
             case Type.B://돌진후 끄기
-                yield return new WaitForSeconds(0.1f);
-                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-                meleeArea.enabled = true;
+                yield return new WaitForSeconds(0.1f);//0.1초 대기
+                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);//전방으로 돌진
+                meleeArea.enabled = true;//공격허용
 
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.5f);//0.5초 대기
                 rigid.linearVelocity = Vector3.zero;
-                meleeArea.enabled = false;
+                meleeArea.enabled = false;//공격 중지
 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(2f);//2초 대기
                 break;
             case Type.C://발사후 종료
-                yield return new WaitForSeconds(0.5f);
-                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                yield return new WaitForSeconds(0.5f);//0.5초 대기
+                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);//총알생성
                 Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
                 rigidBullet.linearVelocity = transform.forward * 20;
 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(2f);//2초대기
                 break;
         }
 
         
 
-        isChase = true;
-        isAttack = false;
+        isChase = true;//쫒아감
+        isAttack = false;//공격중지
         anim.SetBool("isAttack", false);
     }
 
     void FixedUpdate()//매 프래임마다 실행
     {
-        Targerting();
-        FreezeVelocity();
+        Targerting();//감지범위에서 목표 찾음
+        FreezeVelocity();//물리버그 방지
     }
 
     void OnTriggerEnter(Collider other)//플레이어의 공격무기별 상호작용
@@ -147,14 +147,14 @@ public class Enemy : MonoBehaviour
         if(other.tag == "Melee")
         {
             Weapon weapon = other.GetComponent<Weapon>();
-            curHealth -= weapon.damage;
+            curHealth -= weapon.damage;//체력감소
             Vector3 reactVec = transform.position - other.transform.position;//너백
             StartCoroutine(onDamage(reactVec, false));
         }
         else if (other.tag == "Bullet")
         {
             Bullet bullet = other.GetComponent<Bullet>();
-            curHealth -= bullet.damage;
+            curHealth -= bullet.damage;//체력감소
             Vector3 reactVec = transform.position - other.transform.position;//너백
             StartCoroutine(onDamage(reactVec, false));
         }
@@ -162,7 +162,7 @@ public class Enemy : MonoBehaviour
 
     public void HitByGrenade(Vector3 explosionPos)//플레이어 공격무기 상호작용2
     {
-        curHealth -= 100;
+        curHealth -= 100;//체력감소
         Vector3 reactVec = transform.position - explosionPos;//너백
         StartCoroutine(onDamage(reactVec, true));
     }
@@ -171,7 +171,7 @@ public class Enemy : MonoBehaviour
     {
         foreach(MeshRenderer mesh in meshs)
             mesh.material.color = Color.red;//일시적으로 빨갛게 변화
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.1f);//0.1초 대기
 
         if(curHealth > 0)//살아있으면
         {
@@ -189,7 +189,7 @@ public class Enemy : MonoBehaviour
             nav.enabled = false;
             anim.SetTrigger("doDie");
             
-            if (isGrenade)//원인이 수류탄이면
+            if (isGrenade)//원인이 수류탄이면 날려버림
             {
                 reactVec = reactVec.normalized;
                 reactVec += Vector3.up *3;
@@ -198,7 +198,7 @@ public class Enemy : MonoBehaviour
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse);
                 rigid.AddTorque(reactVec * 15, ForceMode.Impulse);
             }
-            else//그외 원인
+            else//그외 원인 약하게 날림
             {
                 reactVec = reactVec.normalized;
                 reactVec += Vector3.up;
