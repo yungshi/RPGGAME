@@ -4,21 +4,21 @@ public class Enemy : MonoBehaviour
 {
     //기본 변수↓
     public enum Type { A, B, C, D };//몬스터 이름
-    public Type enemyType;
+    public Type enemyType;//몬스터 종류
     public int maxHealth;//최대채력
     public int curHealth;//현재채력
-    public Transform Target;
-    public BoxCollider meleeArea;
-    public GameObject bullet;
+    public Transform Target;//타겟 위치
+    public BoxCollider meleeArea;//박스콜라이더
+    public GameObject bullet;//총알 오브젝트
     public bool isChase;//쫒아가는가?
     public bool isAttack;//공격하는가?
     public bool isDead;//죽었는가?
 
-    public Rigidbody rigid;
-    public BoxCollider boxCollider;
+    public Rigidbody rigid;//리지드바디
+    public BoxCollider boxCollider;//콜라이더
     public MeshRenderer[] meshs;
     public NavMeshAgent nav;
-    public Animator anim;
+    public Animator anim;//에니매이션
 
     void Awake()//최초실행 코드
     {
