@@ -5,7 +5,7 @@ public class BossRock : Bullet//Bullet 클래스 기반
     Rigidbody rigid;
     float angularPower = 2;//회전력
     float scaleValue = 0.1f;//크기
-    bool isShoot;//False 기본
+    bool isShoot;//발사확인 변수(False 기본)
 
     void Awake()//최초 실행동작
     {
