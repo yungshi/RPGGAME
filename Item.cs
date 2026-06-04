@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum Type { Ammo, Coin, Grenade, Heart, Weapon };
-    public Type type;
-    public int value;
+    public enum Type { Ammo, Coin, Grenade, Heart, Weapon };//아이템 종류
+    public Type type;//아이템 타입
+    public int value;//아이템 고유번호
 
-    Rigidbody rigid;
-    SphereCollider sphereCollider;
+    Rigidbody rigid;/리지드바디
+    SphereCollider sphereCollider;//콜라이더
 
     void Awake()//최초실행
     {
