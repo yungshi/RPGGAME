@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public int damage;
-    public bool isMelee;
-    public bool isRock;
+    public int damage;//공격력
+    public bool isMelee;//원거리
+    public bool isRock;//근접
     void OnCollisionEnter(Collision collision)
     {
         if(!isRock &&collision.gameObject.tag == "Floor")//땅에 부딧칠때
