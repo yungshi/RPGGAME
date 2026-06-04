@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Orbit : MonoBehaviour
 {
-    public Transform target;
-    public float orbitSpeed;
-    Vector3 offSet;
+    public Transform target;//타겟 위치 변수
+    public float orbitSpeed;//회전 속도
+    Vector3 offSet;//간격에 대한 백터
 
     void Start()//타겟과 오브젝트 간격
     {
