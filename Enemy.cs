@@ -16,8 +16,8 @@ public class Enemy : MonoBehaviour
 
     public Rigidbody rigid;//리지드바디
     public BoxCollider boxCollider;//콜라이더
-    public MeshRenderer[] meshs;
-    public NavMeshAgent nav;
+    public MeshRenderer[] meshs;//메시
+    public NavMeshAgent nav;//길찾기 시스템
     public Animator anim;//에니매이션
 
     void Awake()//최초실행 코드
