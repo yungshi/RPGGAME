@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-    public GameObject meshObj;
-    public GameObject effectObj;
-    public Rigidbody rigid;
+    public GameObject meshObj;//메시 오브젝트
+    public GameObject effectObj;//효과 오브젝트
+    public Rigidbody rigid;/리지드바디
 
     void Start()//실행 즉시 폭발
     {
