@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public enum Type { Melee, Range };
-    public Type type;
-    public int damage;
-    public float rate;
+    public enum Type { Melee, Range };//근접공격과 범위
+    public Type type;/종류
+    public int damage;/데미지
+    public float rate;//범위
     public int maxAmmo;//총알최대수
     public int curAmmo;//현재 총알수
 
-    public BoxCollider meleeArea;
+    public BoxCollider meleeArea;//콜리이더
     public TrailRenderer trailEffect;
-    public Transform bulletPos;
-    public GameObject bullet;
-    public Transform bulletCasePos;
-    public GameObject bulletCase;
+    public Transform bulletPos;//총알 위치
+    public GameObject bullet;//총알 오브젝트
+    public Transform bulletCasePos;//탄피 위치
+    public GameObject bulletCase;//탄피 오브젝트
 
     public void Use()
     {
