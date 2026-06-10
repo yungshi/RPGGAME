@@ -1,10 +1,9 @@
 using UnityEngine;
 
-// 쿼터뷰 / 백뷰 전환기. Main Camera 에 부착.
-// 기존 커스텀 팔로우(클래스명 Camera)는 Awake에서 끄고 이 스크립트가 위치/회전을 제어한다.
-// toggleKey(기본 V)로 전환. 백뷰에서는 플레이어의 마우스 조준 회전(PlayerRotation/FloowCamera)을
-// 끄고(스크립트는 수정하지 않고 enabled만 토글), 마우스 드래그(dragButton, 기본 우클릭)로
-// 카메라를 플레이어 주위로 회전시킨다.
+// 기능:쿼터뷰,백뷰 전환기,
+//스크립트 위치:Main Camera 
+//백뷰:마우스 드래그로 케릭터 방향 전환
+//쿼터뷰:마우스 포인트로 케릭터 방향 전환
 public class CameraSwitcher : MonoBehaviour
 {
     public enum CameraType { QuarterView, BackView }
