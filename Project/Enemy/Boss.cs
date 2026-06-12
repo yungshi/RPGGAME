@@ -7,14 +7,14 @@ public class Boss : Enemy //Enemy 클래스 기반
     public Transform missilePortA;//미사일 A 위치
     public Transform missilePortB;//미사일 B 위치
     public bool isLook;
-    public float bigShotDistance = 0f;   // 빅샷(락) 생성 위치를 보스 전방으로 띄우는 거리 (0=보스 위치)
+    public float bigShotDistance = 0f;   //멀리 점프 거리
 
-    Vector3 lookVec;//플레이어 추적 백터
-    Vector3 tauntVec;//도발기 백터
+    Vector3 lookVec;//플레이어 추적
+    Vector3 tauntVec;//도발기
     
-    Vector3 modelScale = Vector3.one * 3f;//원래 보스 크기(애니메이션 클립이 스케일을 1로 덮어써 작아지는 것 방지)
+    Vector3 modelScale = Vector3.one * 3f;//보스 크기 확대
 
-    void LateUpdate()//애니메이션 적용 후 모델 크기 원상복구
+    void LateUpdate()//모델 크기 복구
     {
         if (anim != null)
             anim.transform.localScale = modelScale;
@@ -29,21 +29,21 @@ public class Boss : Enemy //Enemy 클래스 기반
         anim = GetComponentInChildren<Animator>();//게임 내부 컴포넌트 가져오기5
 
         if (nav != null && nav.isOnNavMesh) nav.isStopped = true;
-        // 원거리 공격 패턴(미사일/락/도발). Type.D 도 포함 — 이동은 EnemyD 가 NavMesh 로 담당.
+        
         StartCoroutine(Think());
     }
 
-    void Update()//매 프래임마다 업데이트
+    void Update()//매 프래임 업데이트
     {
-        // Type.D 는 EnemyD.cs 가 이동/회전을 전담 → Boss 이동 루프 비활성화
+        
         if (enemyType == Enemy.Type.D) return;
 
-        if (isDead) //생사여부확인
+        if (isDead) //생사여부
         {
             StopAllCoroutines();
             return;
         }
-        if (isLook)//일정 범위 내에 타겟이 있는지 감지
+        if (isLook)//타겟 감지
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
@@ -54,8 +54,8 @@ public class Boss : Enemy //Enemy 클래스 기반
             MoveToward(tauntVec);
     }
 
-    // NavMesh 가 있으면 경로 이동, 없으면(미배치) 직접 이동 — SetDestination 오류 방지 + 돌진 유지
-    void MoveToward(Vector3 dest)
+    
+    void MoveToward(Vector3 dest)//상태별 이동 방식
     {
         if (nav != null && nav.enabled && nav.isOnNavMesh)
         {
@@ -77,7 +77,7 @@ public class Boss : Enemy //Enemy 클래스 기반
         yield return new WaitForSeconds(0.1f);
         if (isDead) yield break;
 
-        int ranAction = Random.Range(0, 5);//0~4까지 무작위 정수 숫자
+        int ranAction = Random.Range(0, 5);
         switch (ranAction)
         {
             case 0:
@@ -94,7 +94,7 @@ public class Boss : Enemy //Enemy 클래스 기반
         }
     }
 
-    IEnumerator MissileShot()//미사일 발사 형식
+    IEnumerator MissileShot()//미사일 발사 
     {
         if (isDead) yield break;
         anim.SetTrigger("doShot");
@@ -114,7 +114,7 @@ public class Boss : Enemy //Enemy 클래스 기반
             StartCoroutine(Think());
     }
 
-    IEnumerator RockShot()//RockShot 공격 형식
+    IEnumerator RockShot()//RockShot 공격 
     {
         if (isDead) yield break;
         isLook = false;
@@ -127,7 +127,7 @@ public class Boss : Enemy //Enemy 클래스 기반
         StartCoroutine(Think());
     }
 
-    IEnumerator Taunt()//플레이어에게 도발
+    IEnumerator Taunt()//도발기
     {
         if (isDead) yield break;
         tauntVec = Target.position + lookVec;
