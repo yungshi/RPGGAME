@@ -3,22 +3,22 @@ using System.Collections;
 public class BossRock : Bullet//Bullet 클래스 기반
 {
     Rigidbody rigid;
-    public float flightTime = 1.2f;   // 락 발사 후 목표 도달까지 시간(작을수록 빠르고 직선에 가까움)
-    public float launchSpeed = 15f;   // 목표 미사용 시 보스 앞쪽 직진 속도
-    public bool homeToTarget = false; // true 면 플레이어를 추적, false 면 직진
-    float angularPower = 2;//회전력
+    public float flightTime = 1.2f;   //목표가ㅣ 도달하는데 소유시간
+    public float launchSpeed = 15f;   // 보스 직진속도
+    public bool homeToTarget = false; // false=직진,True=추적
+    float angularPower = 2;//회전힘
     float scaleValue = 0.1f;//크기
-    bool isShoot;//발사확인 변수(False 기본)
+    bool isShoot;//발사확인(기본값 Fasle)
     Transform target;//발사 목표(플레이어)
 
-    void Start()
+    void Start()//시작시
     {
         if (homeToTarget)
         {
             var p = GameObject.FindWithTag("Player");
             if (p != null) target = p.transform;
         }
-        if (damage <= 0) damage = 40;//데미지 기본값
+        if (damage <= 0) damage = 40;
         foreach (var e in FindObjectsByType<Enemy>(FindObjectsSortMode.None))//다른 몬스터는 통과(관통)
             foreach (var ec in e.GetComponentsInChildren<Collider>())
                 foreach (var mc in GetComponentsInChildren<Collider>())
@@ -26,12 +26,12 @@ public class BossRock : Bullet//Bullet 클래스 기반
         StartCoroutine(LaunchWhenReady());
     }
 
-    IEnumerator LaunchWhenReady()//충전 완료 후 플레이어에게 발사
+    IEnumerator LaunchWhenReady()//발사 준비후 발사
     {
         yield return new WaitUntil(() => isShoot);
         if (target != null && homeToTarget)
         {
-            // 중력을 고려한 탄도 속도 계산 → 거리와 무관하게 flightTime 뒤 목표 지점에 도달(멀리 있어도 명중)
+           
             float T = Mathf.Max(0.1f, flightTime);
             Vector3 disp = target.position - transform.position;
             Vector3 v = disp / T - 0.5f * Physics.gravity * T;
@@ -44,7 +44,7 @@ public class BossRock : Bullet//Bullet 클래스 기반
         Destroy(gameObject, 5f);
     }
 
-    void OnCollisionEnter(Collision col)//플레이어 피해
+    void OnCollisionEnter(Collision col)//플레이어에게 데미지줌
     {
         if (!col.gameObject.CompareTag("Player")) return;
         Items items = col.gameObject.GetComponent<Items>();
@@ -53,7 +53,7 @@ public class BossRock : Bullet//Bullet 클래스 기반
         Destroy(gameObject);
     }
 
-    void Awake()//최초 실행동작
+    void Awake()//가장 먼저 실해하는 것
     {
         rigid = GetComponent<Rigidbody>();
         StartCoroutine(GainPowerTimer());
