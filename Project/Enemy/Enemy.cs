@@ -4,21 +4,21 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    // ── 기본 변수 ──────────────────────────────────
-    public enum Type { A, B, C, D }; // 몬스터 종류
+    
+    public enum Type { A, B, C, D }; // 몬스터 타입
     public Type enemyType;
 
     public int maxHealth;           // 최대 체력
     public int curHealth;           // 현재 체력
-    public int damage = 10;         // 근접 공격 데미지
+    public int damage = 10;         // 데미지
 
-    public Transform Target;        // 플레이어 Transform
-    public BoxCollider meleeArea;   // 근접 공격 판정 콜라이더(Trigger)
-    public GameObject bullet;       // Type C : Missile 프리팹
+    public Transform Target;        // 터겟 위치
+    public BoxCollider meleeArea;   // 공격판정 Trigger
+    public GameObject bullet;       // C 몬스터 미사일
 
-    public bool isChase;
-    public bool isAttack;
-    public bool isDead;
+    public bool isChase;//추격
+    public bool isAttack;/공격
+    public bool isDead;//사망
 
     public Rigidbody rigid;
     public BoxCollider boxCollider;
@@ -26,8 +26,8 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent nav;
     public Animator anim;
 
-    // ── 초기화 ─────────────────────────────────────
-    void Awake()
+    
+    void Awake()//최초실행
     {
         rigid        = GetComponent<Rigidbody>();
         boxCollider  = GetComponent<BoxCollider>();
@@ -39,14 +39,14 @@ public class Enemy : MonoBehaviour
             Invoke("ChaseStart", 2f);
     }
 
-    void ChaseStart()
+    void ChaseStart()//플레이어 추격
     {
         isChase = true;
         if (anim != null) anim.SetBool("IsWalk", true);
     }
 
-    // ── 매 프레임 ──────────────────────────────────
-    void Update()
+    
+    void Update()//프레이마다 업데이트
     {
         if (nav.enabled && nav.isOnNavMesh && enemyType != Type.D)
         {
@@ -55,13 +55,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void FixedUpdate()//프레임 마다 업데이트
     {
         Targerting();
         FreezeVelocity();
     }
 
-    void FreezeVelocity()
+    void FreezeVelocity()//백터 고정
     {
         if (isChase)
         {
@@ -70,31 +70,31 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // ── 공격 감지 ──────────────────────────────────
-    void Targerting()
+   
+    void Targerting()//감지
     {
         if (isDead || enemyType == Type.D) return;
 
         float targetRadius = 0f;
         float targetRange  = 0f;
 
-        switch (enemyType)
+        switch (enemyType)//감지범위 
         {
             case Type.A: targetRadius = 1.5f; targetRange =  3f; break;
-            case Type.B: targetRadius = 1.5f; targetRange =  3f; break; // A와 동일
+            case Type.B: targetRadius = 1.5f; targetRange =  3f; break; 
             case Type.C: targetRadius = 0.5f; targetRange = 25f; break;
         }
 
         RaycastHit[] hits = Physics.SphereCastAll(
             transform.position, targetRadius, transform.forward,
-            targetRange, LayerMask.GetMask("Player"));
+            targetRange, LayerMask.GetMask("Player"));//감지 되었을때
 
         if (hits.Length > 0 && !isAttack)
             StartCoroutine(Attack());
     }
 
-    // ── 공격 패턴 ──────────────────────────────────
-    IEnumerator Attack()
+    
+    IEnumerator Attack()//공격패턴
     {
         isChase = false;
         isAttack = true;
@@ -102,14 +102,12 @@ public class Enemy : MonoBehaviour
 
         switch (enemyType)
         {
-            // ── Type A / B : 근접 공격 ──────
+           
             case Type.A:
             case Type.B:
                 yield return new WaitForSeconds(0.2f);
 
-                // 근접 타격: 공격 순간 사정거리 안 플레이어에게 직접 피해
-                // (meleeArea 콜라이더 토글 제거 - B/C의 meleeArea가 본체 콜라이더라
-                //  공격 시 본체가 꺼져 더 이상 피격되지 않던 문제 방지)
+               
                 if (Target != null)
                 {
                     Items playerItems = Target.GetComponent<Items>();
@@ -123,13 +121,13 @@ public class Enemy : MonoBehaviour
                 yield return new WaitForSeconds(2f);
                 break;
 
-            // ── Type C : 미사일 발사 ────────────
+           
             case Type.C:
                 yield return new WaitForSeconds(0.5f);
 
                 if (bullet != null)
                 {
-                    // 바닥에 바로 닿아 즉시 파괴되지 않도록 위/앞으로 띄워서 생성
+                   
                     Vector3 spawnPos = transform.position + Vector3.up * 1.0f + transform.forward * 0.8f;
                     Quaternion spawnRot = Quaternion.identity;
                     if (Target != null)
@@ -170,25 +168,25 @@ public class Enemy : MonoBehaviour
         if (anim != null) anim.SetBool("IsAttack", false);
     }
 
-    // ── 피격 감지 : Trigger ────────────────────────
-    void OnTriggerEnter(Collider other)
+   
+    void OnTriggerEnter(Collider other)//피격감지
     {
-        // 플레이어 무기(근접)에 맞을 때
-        if (other.CompareTag("Melee"))
+        
+        if (other.CompareTag("Melee"))//근접무기
         {
             Weapon weapon = other.GetComponent<Weapon>();
             if (weapon == null) return;
             TakeDamage(weapon.damage, transform.position - other.transform.position);
         }
-        // 플레이어 무기(총알 Trigger)에 맞을 때
-        else if (other.CompareTag("Bullet"))
+        
+        else if (other.CompareTag("Bullet"))//원거리 무기
         {
             Bullet bulletComp = other.GetComponent<Bullet>();
             if (bulletComp == null) return;
             TakeDamage(bulletComp.damage, transform.position - other.transform.position);
             Destroy(other.gameObject);
         }
-        // meleeArea가 플레이어를 타격할 때
+        
         else if (other.CompareTag("Player"))
         {
             Items playerItems = other.GetComponent<Items>();
@@ -199,8 +197,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // ── 피격 감지 : Solid Collider (HandGun 등) ────
-    void OnCollisionEnter(Collision collision)
+  
+    void OnCollisionEnter(Collision collision)//총알 피격및 총알 제거
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
@@ -211,22 +209,22 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // ── 데미지 공통 처리 ──────────────────────────
-    public void TakeDamage(int dmg, Vector3 reactVec)
+  
+    public void TakeDamage(int dmg, Vector3 reactVec)//데미지 개산
     {
         if (isDead) return;
         curHealth -= dmg;
         StartCoroutine(onDamage(reactVec, false));
     }
 
-    public void HitByGrenade(Vector3 explosionPos)
+    public void HitByGrenade(Vector3 explosionPos)//수류탄에 맞으면
     {
         if (isDead) return;
         curHealth -= 100;
         StartCoroutine(onDamage(transform.position - explosionPos, true));
     }
 
-    IEnumerator onDamage(Vector3 reactVec, bool isGrenade)
+    IEnumerator onDamage(Vector3 reactVec, bool isGrenade)//공격을 받았을때 변화
     {
         foreach (MeshRenderer mesh in meshs)
             mesh.material.color = Color.red;
