@@ -6,9 +6,9 @@ public class Orbit : MonoBehaviour
     public float orbitSpeed;//회전 속도
     Vector3 offSet;//간격에 대한 백터
 
-    void Awake()
+    void Awake()//물리엔지 버그 방지
     {
-        // 자식(수류탄 비주얼)의 Rigidbody가 물리로 떨어져 공전에서 이탈하거나 플레이어를 미는 문제 방지
+        
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>(true))
         {
             rb.isKinematic = true;
@@ -21,12 +21,12 @@ public class Orbit : MonoBehaviour
         }
     }
 
-    void Start()//타겟과 오브젝트 간격
+    void Start()//타겟과 오브젝트 사이 간격
     {
         offSet = transform.position - target.position;
     }
 
-    void Update()//프래임 마다 위치 업데이트
+    void Update()//업데이트
     {
         transform.position = target.position + offSet;
         transform.RotateAround(target.position, Vector3.up, orbitSpeed * Time.deltaTime);
