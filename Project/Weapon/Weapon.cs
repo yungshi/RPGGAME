@@ -18,14 +18,14 @@ public class Weapon : MonoBehaviour
     public GameObject bulletCase;//탄피 오브젝트
     void Awake()
     {
-        // 장착 무기가 손에 붙은 채 물리로 플레이어를 밀어 몸이 흔들리는 문제 방지
+        
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.isKinematic = true;
             rb.useGravity = false;
         }
-        // 솔리드(비트리거) 콜라이더가 플레이어와 충돌해 흔들림을 유발 -> 비활성화 (meleeArea 트리거는 유지)
+        
         foreach (Collider col in GetComponents<Collider>())
         {
             if (!col.isTrigger)
