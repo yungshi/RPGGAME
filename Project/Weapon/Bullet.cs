@@ -8,18 +8,18 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         string tag = collision.gameObject.tag;
-        if (!isRock && tag == "Floor")//땅에 부딪칠 때
+        if (!isRock && tag == "Floor")//지면에 충돌
         {
             Destroy(gameObject, 3);
         }
-        else if (!isMelee && tag == "Wall")//벽에 부딪칠 때(솔리드 콜라이더)
+        else if (!isMelee && tag == "Wall")//벽에 충돌
         {
             Destroy(gameObject);
         }
         
     }
 
-    void OnTriggerEnter(Collider other)//원거라 무기일 경루
+    void OnTriggerEnter(Collider other)//원거리 무기일 경우
     {
         if (!isMelee && other.gameObject.tag == "Wall")
         {
