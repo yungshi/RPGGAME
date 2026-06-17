@@ -11,7 +11,7 @@ public class Attack_1 : MonoBehaviour
     public bool IsFireHeld => fhold;
     public bool rDown;
     public bool isFireReady;
-    public bool auto = true; // true=연발(꾹 누르면 자동), false=단발(한 번씩)
+    public bool auto = true; // 연발,다잘 설정
     float fireDelay;
     bool canAttack = true;
     bool isReload;
@@ -26,7 +26,7 @@ public class Attack_1 : MonoBehaviour
 
     Animator anim;
 
-void Start()
+void Start()//컴포넌트 가져오가
     {
         anim = GetComponent<Animator>();
         if (anim == null)
@@ -52,25 +52,24 @@ void Start()
      
     
     
-    void GetInput()
+    void GetInput()//키보드 키
     {
         bool canUseInput = equipWeapon != null && equipWeapon.gameObject.activeInHierarchy && canAttack;
         fdown = canUseInput && (Input.GetButtonDown("Fire1") || Input.GetMouseButtonDown(0));
         fhold = canUseInput && (Input.GetButton("Fire1") || Input.GetMouseButton(0));
 
-        // 재장전: R키(Reload 축) 사용, 공격 쿨타임(canAttack)과 무관하게 동작
         bool hasWeapon = equipWeapon != null && equipWeapon.gameObject.activeInHierarchy;
         rDown = hasWeapon && (Input.GetButtonDown("Reload") || Input.GetKeyDown(KeyCode.R));
     }
 
-void Attack()
+void Attack()//총,근접 무기별 공격 에니메이션 활성화
     {
         if (equipWeapon == null || !equipWeapon.gameObject.activeInHierarchy)
             return;
 
         if (equipWeapon.type == Weapon.Type.Range)
         {
-            // auto=true 면 누르고 있는 동안 연발(fhold), auto=false 면 누를 때마다 단발(fdown)
+            
             bool fireInput = auto ? fhold : fdown;
             if (fireInput && canAttack && equipWeapon.curAmmo > 0 && !playerControl.isDodge && !itemInteraction.isSwap)
             {
@@ -83,7 +82,7 @@ void Attack()
         }
         else
         {
-            // 근접: 누를 때마다 1회
+            
             if (fdown && canAttack && !playerControl.isDodge && !itemInteraction.isSwap)
             {
                 equipWeapon.Use();
@@ -103,7 +102,7 @@ IEnumerator FireRateCooldown(float delay)
     }
 
 
-void Reload()
+void Reload()//제장전
     {
         if (equipWeapon == null)
             return;
@@ -126,7 +125,7 @@ void Reload()
         }
     }
 
-void ReloadOut()
+void ReloadOut()//장전 종료후 총알 리셋
     {
         int reAmmo = items.ammo < equipWeapon.maxAmmo ? items.ammo : equipWeapon.maxAmmo;
         equipWeapon.curAmmo = reAmmo;
