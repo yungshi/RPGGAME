@@ -43,7 +43,7 @@ public class EnemyD : MonoBehaviour
     [Header("쿨다운")]
     public float attackCooldown = 2.5f;
 
-    void Awake()
+    void Awake()//컴포넌트 할당 및 시작작업
     {
         enemy = GetComponent<Enemy>();
         nav   = GetComponent<NavMeshAgent>();
@@ -64,7 +64,7 @@ public class EnemyD : MonoBehaviour
                 NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                 nav.Warp(hit.position);
         }
-#if UNITY_EDITOR
+#if UNITY_EDITOR//어셋 불로오기
         if (freezeCirclePrefab == null)
             freezeCirclePrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(
                 "Assets/Hovl Studio/Magic effects pack/Prefabs/Magic circles/Freeze circle.prefab");
@@ -76,7 +76,7 @@ public class EnemyD : MonoBehaviour
 
     int PlayerMaskValue => playerMask.value != 0 ? playerMask.value : LayerMask.GetMask("Player");
 
-    void Update()
+    void Update()//보스 실시간 업데이트
     {
         if (busy || enemy == null || enemy.isDead || enemy.Target == null) return;
 
@@ -174,7 +174,7 @@ public class EnemyD : MonoBehaviour
         }
         if (enemy.rigid != null) enemy.rigid.isKinematic = wasKinematic;
 
-        // 5) 착륙 판정: 예고된 원(markCenter) 안에 아직 플레이어가 있으면 데미지(피했으면 안 맞음)
+        //착륙 판정: 예고된 원 안에 아직 플레이어가 있으면 데미지를 줌(피했으면 안 맞음)
         if (enemy != null && !enemy.isDead && enemy.Target != null)
         {
             Collider[] hits = Physics.OverlapSphere(markCenter, freezeRadius, PlayerMaskValue);
@@ -189,7 +189,7 @@ public class EnemyD : MonoBehaviour
     }
 
  
-    IEnumerator BasicAttack()
+    IEnumerator BasicAttack()//기본 공격
     {
         busy = true;
         if (nav != null && nav.enabled && nav.isOnNavMesh) nav.isStopped = true; 
@@ -250,7 +250,7 @@ public class EnemyD : MonoBehaviour
     }
 
 
-    void DamagePlayer(int dmg)
+    void DamagePlayer(int dmg)//플레이어가 데미지 부여
     {
         if (enemy.Target == null) return;
         Items items = enemy.Target.GetComponent<Items>();
