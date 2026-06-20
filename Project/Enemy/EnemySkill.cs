@@ -49,7 +49,7 @@ public class EnemySkill : MonoBehaviour
     }
 
     
-    void FixedUpdate()
+    void FixedUpdate()//적 상태 업데이트
     {
         if (busy || enemy == null || enemy.isDead) return;
         if (enemy.enemyType == Enemy.Type.D) return;
@@ -92,7 +92,7 @@ public class EnemySkill : MonoBehaviour
     }
 
    
-    IEnumerator PatternA()
+    IEnumerator PatternA()//적 A 스킬 종류
     {
         switch (Pick(aBasic, aDouble, aHeal))
         {
@@ -115,7 +115,7 @@ public class EnemySkill : MonoBehaviour
     }
 
 
-    IEnumerator PatternB()
+    IEnumerator PatternB()//적 B 스킬 종류
     {
         yield return new WaitForSeconds(0.2f);
         switch (Pick(bBasic, bStun, bBind))
@@ -136,7 +136,7 @@ public class EnemySkill : MonoBehaviour
     }
 
     
-    IEnumerator PatternC()
+    IEnumerator PatternC()//적 C 스킬 종류
     {
         yield return new WaitForSeconds(0.5f);
         switch (Pick(cBasic, cDot, cMulti))
@@ -171,7 +171,7 @@ public class EnemySkill : MonoBehaviour
     }
 
     
-    void SpawnMissile(float yawOffset, bool isDot, bool homing = true)
+    void SpawnMissile(float yawOffset, bool isDot, bool homing = true)//적 C의 미사일 
     {
         if (enemy.bullet == null) return;
 
@@ -205,7 +205,7 @@ public class EnemySkill : MonoBehaviour
     }
 
    
-    IEnumerator GreenBlinkHeal()
+    IEnumerator GreenBlinkHeal()//적 A의 힐 스킬
     {
         int healAmount   = Mathf.RoundToInt(enemy.maxHealth * healPercent);
         int startHealth  = enemy.curHealth;
